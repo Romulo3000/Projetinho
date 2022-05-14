@@ -86,6 +86,17 @@ int main(){
     Sound musDerrota = LoadSound("assets/gameover_theme.mp3");
 
     currentScreen = TITLE;
+    
+    int hitObstacle = 0;	
+    EnvItem envItems[] = {
+        {{ 0, 0, 1000, 400 }, 0, LIGHTGRAY },
+        {{ 150, 500, 400, 50 }, 1, GRAY },
+        {{ 550, 500, 400, 50 }, 1, GRAY },
+        {{ 50, 350, 400, 50 }, 1, GRAY },
+        {{ 450, 350, 400, 50 }, 1, GRAY }
+        {{ 200, 550, 400, 50 }, 1, GRAY }
+        {{ 200, 200, 400, 50 }, 1, GRAY }
+    };
 
     while (!WindowShouldClose()){
 
@@ -260,6 +271,22 @@ int main(){
                         flagMenu =1;
                     }
                 }
+                
+                for (int i = 0; i < envItemsLength; i++)
+                {
+                    EnvItem *ei = envItems + i;
+                    Vector2 *p = &(player->posicao);
+                    if (ei->blocking &&
+                        ei->rect.x <= p->x &&
+                        ei->rect.x + ei->rect.width >= p->x &&
+                        ei->rect.y >= p->y &&
+                        ei->rect.y < p->y + player->velocidade)
+                    {
+                        hitObstacle = 1;
+                        player->speed = 0.0f;
+                        p->y = ei->rect.y;
+                    }
+                }
 
 
                 //Condição para passar a proxima tela
@@ -308,6 +335,7 @@ int main(){
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
+            
 
             switch(currentScreen) // Tela de fundo
             {
@@ -347,6 +375,13 @@ int main(){
                         DrawTextureRec(civil1,(Rectangle) {(civil1.width /10)*frameAtual, 0, civil1.width/10, civil1.height}, posCivil[0], WHITE);
                         DrawTextureRec(civil2,(Rectangle) {(civil2.width /12)*frameAtual, 0, civil2.width/12, civil2.height}, posCivil[1], WHITE);
                         DrawTextureRec(civil3,(Rectangle) {(civil3.width /12)*frameAtual, 0, civil3.width/12, civil3.height}, posCivil[2], WHITE);
+                        
+                        DrawRectangle(150, 500, 400, 50, BLUE);
+                        DrawRectangle(550, 500, 400, 50, BLUE);
+                        DrawRectangle(50, 350, 400, 50, BLUE);
+                        DrawRectangle(450, 350, 400, 50, BLUE);
+                        DrawRectangle(200, 550, 400, 50, BLUE);
+                        DrawRectangle(200, 200, 400, 50, BLUE);
 
                         if(direcao == 0){       //Caso ele fique parado
                             DrawTextureRec(personagemParado,(Rectangle) {(personagemParado.width /totalFrame)*frameAtual, 0, personagemParado.width/totalFrame, personagemParado.height}, player.posicao, WHITE);
