@@ -22,6 +22,14 @@ typedef struct {
     Color color;
 } shootInimigo;
 
+typedef struct EnvItem {
+    Rectangle rect;
+    int blocking;
+    Color color;
+} EnvItem;
+
+
+
 void movPlayer (int *direcao, int *totalFrame, jogador *player, int *pulo);
 
 void carregaPlayer();
